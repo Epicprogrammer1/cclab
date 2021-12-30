@@ -1,0 +1,44 @@
+Steps to parse a grammer using antlr tool:
+1. Create a folder in c drive called antlr.
+2. Copy grammar file (for ex: Calculator.g4 file) , antlr-4.5-complete.jar file and two batch
+files (antlr4.bat and grun.bat) files in to c:\antlr folder.
+3. go to command prompt.
+4. set classpath=.;C:\antlr\antlr-4.5-complete.jar.
+5. compile a grammer file for ex take Calculator grammer file
+4. antlr4 Calculator.g4 // on success java files will be generated.
+5. javac *.java //compile java files.then
+6. grun Calculator calculator –gui.
+7. ex: 3*(4+5) enter and press ctrl+z.
+8. Finally a parse tree inspector generates for the given grammer.
+9. Click on save png then a png image file will be created for the given grammer.
+
+
+Source Code:
+
+Calculator.g4:
+
+grammar Calculator;
+calculator : expression;
+expression
+ : expression operator=('*'|'/') expression # MultiplyDivide
+ | expression operator=('+'|'-') expression # AddSubtract
+ | '-' expression # Negate
+ | Number # Number
+ | '(' expression ')' # Parenthesis
+ ;
+Number : DIGIT+ '.' DIGIT*
+ | '.' DIGIT+
+ | DIGIT+
+ ;
+DIGIT: ('0'..'9');
+WS: [ \t\r\n]+ -> skip;
+
+antlr4.bat:
+
+java org.antlr.v4.Tool %*
+
+grun.bat:
+
+java org.antlr.v4.runtime.misc.TestRig %*.
+
+
